@@ -1,7 +1,21 @@
 from datetime import date
+import json
 
-# this list will hold the applications made by the user
-applications = []
+# this is the function to save the created application to a json file
+def save_applications():
+    with open("applications.json", "w") as file:
+        json.dump(applications, file, indent=4)
+
+# this is the function to load the json file
+# if the file doesn't exist yet, the program will start with an empty list
+def load_applications():
+    try:
+        with open("applications.json", "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+applications = load_applications()
 
 # this is the function to add applications
 def add_application():
@@ -21,10 +35,8 @@ def add_application():
         "notes": notes,
     }
 
-    # adds the newly created application to the list
     applications.append(application)
-
-    # returns to the user that the application was successfully added
+    save_applications()
     print("Application added.\n")
 
 # this is the function to view the applications of the user
@@ -43,13 +55,14 @@ def view_applications():
 
 # main function where everything happens
 def main():
-    print("Welcome to Application Tracker!\n")
+    print("Welcome to the Application Tracker™!")
 
     while True:
-
+        print("====================")
         print("1. Add Application")
         print("2. View Applications")
-        print("3. Exit\n")
+        print("3. Exit")
+        print("====================")
 
         choice = input("Enter your selection: ").strip()
 
